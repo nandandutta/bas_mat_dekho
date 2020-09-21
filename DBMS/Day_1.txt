@@ -1,0 +1,182 @@
+1.
+Student(StudentID, Name, Email, Mobile, Address)
+columns which is unique is the candiate key which is selected during design
+Ck = {{StudentID}, {Email}, {Mobile}}
+one of the candidate keys is selected as a primary key which satisfies unique and not null
+Pk ={StudentID}
+
+columns which were part of the candidate key
+
+Key attributes = {StudentId, Email, Mobile}
+
+left out columns of the relation which did not qualify for the candidiate key
+Non key attributes = {Name, Address}
+
+candidate keys which was not selected to be a primary key
+Alternate key = {Email, mobile}
+2. 
+Exam_result(StudentId, courseID, examdate, Marks, Grade)
+CK= {{StudentID, CourseID}}
+PK={StudentID, CourseID},
+KA= {StudentID, CourseID}
+NKA= {examDate, MArks, Grade}
+AK= { }
+
+
+
+Q. is candidate key same as Key attribute - No
+
+
+
+
+Foreign key
+
+1. A column of a table which refers or looks up for a column which is unique from another table
+2. using foreign keys we can establish relationships between tables
+emp(empid, name salary, managerID, departmentID)
+dept(deptid, dname, managerId, locationID)
+
+department_id is a foreign key in the emp table which refers to deptid in the dept table. 
+with this we can infer a relationship -> emp works in department
+
+in the absence of this column departmentID in emp table, we will be unable to fetch the department details of an employee
+
+For empID 100 fetch his department deatils or dept details in which the employee 100 is working
+90	Executive 	100	1700
+
+The column being looked up (deptid from dept table) has to be unique
+
+
+
+managerID is a foreign key in the dept table whcih refers to employee id in the emp table -> because the manager ID is the employee ID of an employee
+
+Department is managed by an emplpoyee
+
+Q1. can a foreign key column contain duplicates -yes
+Q2. can a foreign key column contain null - yes
+
+
+Student(studentID, name, email, mobile, BranchID)
+Branch(branchID, name)
+
+1. relationships => student enrolls for a branch
+2. branchID in stduent table is the foreign key which refers to branchId in the branch table
+
+vendors of RDBMS:
+1. Mysql
+2. Oracle
+3. Microsoft SQL Serevr
+4. Sybase
+5. IBM DB2
+
+
+Language to interact with the RDBMS's - SQL (Structured Query Language)
+ANSI - Americal national standards institute has defined a common SQL syntax accross all RDBMS's -ANSI SQL
+Operations of ANSI SQL:
+1.Data definition language - DDL (Create, alter, drop, truncate)
+2.Data Manipulation Language - DML (insert, update, delete, merge)
+3.Data Query/Reporting Language - DQL/DRL (Select)
+4.Transaction control language TCL - (commit, rollback)
+5.Data control language - DCL - controls access to data(Grant, revoke)
+
+Operations of data retrival:
+1. subset columns
+2. filter rows
+3. Sort the data
+4. Group and aggregate
+5. Joins - combining the data from multiple tables.
+6. Advanced Querying:
+	1. Sub queries
+	2. Analytitical functions - rank, dense rank functions
+	3. advanced aggregates - slicing and dicing data
+	4. Creating views
+7. Understanding the benifits of indexes
+8. What happens when volume of the data explodes? Does RDBMS handle it?
+9. DDL, DML, TCL commands
+
+
+SQLPLUS - command line editor to execute SQL commands
+
+
+1. in the comamnd prompt type sqlplus and login as system(username system, password system)
+2. unlock and reset the password of hr user
+
+alter user hr account unlock;
+alter user hr identified by hr;
+
+3. exit sqlplus
+4. launch sqlplus again with hr user(username hr, password hr)
+5. check the tables in the hr user:
+select * from tab;
+
+
+
+1. subsetting columns
+
+select col1, col2, ....
+from tabname
+
+or 
+select *
+from
+tabname
+
+' ' -> used for data
+" " -> used for column aliases only
+
+
+2. Restricting/filtering rows with select
+
+
+
+
+syntax of thw where clause
+
+where colname operator value
+
+all rows will be selected if the where clause for that row retruns true
+eg:
+select last_name
+from employees
+where department_id = 10
+
+operators: relational operators : = ,!=/<>, <, >, <=, >=
+	   SQL operators: IN, LIKE, BETWEEN, IS
+Value : Numeric value - need not be enclosed in quotes
+	charecter value- it is case sensitive and must be in single quotes
+	For example 'Raghu' and 'raghu' are different strings
+	Date value - is format sensitive and must be in single quotes
+	valid date format is : 'dd-mon-yyyy', sometimes / can be used as the field seperator in dates
+	date
+	eg : '17-Jun-2019' or '7-jun-2019' or '8/Aug/2019'
+
+SQL operators:
+1.
+check for either departments 10 or 20 or 30
+where department_id IN (10,20,30)
+2.
+check for salary in the range 5000(incl) to 10000(incl)
+where salary between 5000 and 10000
+3.
+you cannot use = operator while comparing null, "is" operator is to be used
+where manager_id is null
+
+
+where can contain multiple conditions
+where condition1 AND/OR condition2 AND/OR condition3
+working in department_id 10, 20
+where department_id = 10 OR department_id = 20
+where department_id IN (10,20)
+working in departemnt 10 getting salary more than 5000
+where department_id =10 and salary > 5000
+
+employees getting salary >=5000 <=10000
+where salary >=5000 AND salary<=10000
+where salary between 5000 AND 10000
+
+
+conditions in where can be negated using NOT operator
+
+where manager_id is not null
+where salary not between 5000 and 10000
+where department_id NOT IN (10,20,30)

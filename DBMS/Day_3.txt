@@ -1,0 +1,356 @@
+
+Aggregates recap
+
+count(*) - counts the rows of the table includes null as well
+
+count(col_name) - count the rows in the column of the table, excludes null
+
+suppose commission_pct column has 35 non null values, which means only 35 employees are eligible for commission
+then count(commission_pct) will output ->  35
+select to_char(hire_date,'day') as "day of week", count(*)
+from employees
+group by to_char(hire_date,'day')
+having count(employee_id) >= 10
+
+
+The company is planning a recruitment drive and wants to identify the no of employees hired on working days with more than 10 employees hired.
+Your report must list the days and the number of employees hired on each of them.
+
+
+restriction:
+1. day of the week not in saturday and sunday - apply this is where
+
+2. count(*) >=10 - apply this in having
+
+
+
+select to_char(hire_date,'day') as "day of week", count(*)
+from employees
+where trim(to_char(hire_date,'day')) not in ('saturday','sunday')
+group by to_char(hire_date,'day')
+having count(employee_id) >= 10
+
+
+
+
+joins
+
+--------
+
+
+1.
+
+A report of employee name and department name:
+
+from tables:  employees and departments
+relationship : employees works for a department
+fk : department_id in employees looks up for department_id in departments
+
+condition for lookup:
+employees.department_id = departments.department_id
+columns to be subset : last_name, department_name
+
+select last_name as "Employee Name", department_name
+from employees join departments
+on employees.department_id = departments.department_id
+
+INNER JOIN - joining 2 tables based on a condition
+EQUI JOIN - if the join condition(in the on clause) has an "equal to" operator its called an equi join
+
+1. column looked up cannot conatin duplicates
+2. the column names in both the tables can be different - i.e department_id in both the tables can be spelled differently
+
+Above query can be written by referencing column names using table aliases
+
+select last_name "Employee Name", department_name
+from employees e join departments d
+on e.department_id = d.department_id
+
+2.
+
+ANSI compliant joins
+select department_name, last_name HOD
+from employees e join departments d
+on d.manager_id = e.employee_id
+
+
+using clause - specify the column name to join instead of the condition.
+using clause implies the on condition internally
+
+table1 join table2 using (col) => table1 join table2 on table1.col = table2.col
+both the tables should have the joining columns spelled with the same name
+
+select city
+from locations l join departments d
+on l.location_id = d.location_id
+
+
+select city
+from locations l join departments d
+using (location_id)
+
+with the using clause:
+1. location_id column should be spelled excalty the same in both the tables
+2. the column in the using clause should not be refenrenced through table name or table alias in the entire query
+
+Below query returns an error because the column location_id is referenced by table alias in the select clause
+select l.location_id, city
+from locations l join departments d
+using (location_id)
+
+
+above error can be rectified with the below query by not referencing location_id as l.location_id
+select location_id, city
+from locations l join departments d
+using (location_id)
+
+
+join with using clause:
+1. Get the last_name, department_name
+
+
+select last_name, department_name
+from employees join departments
+on employees.department_id = departments.department_id
+
+select last_name, department_name
+from employees join departments
+using (department_id)
+
+
+
+2. Get the department_name, HOD
+
+select department_name, last_name HOD
+from employees e join departments d
+on d.manager_id = e.employee_id
+
+
+I cannot convert this to join... using clause
+
+
+
+
+select columns
+from table1 Natural join table2
+
+This applies an inner join(implicitly) with all columns with the same name from both the tables
+
+select city
+from locations l join departments d
+on l.location_id = d.location_id
+
+
+select city
+from locations l join departments d
+using (location_id)
+
+
+select city
+from locations natural join departments
+
+
+
+
+select employee id, last_name, first_name, e.manager_id, 
+d.department_id, department_name 
+from employees e join departments d
+on e.department_id = d.department_id
+where e.manager_id = 149;
+
+select employee id, last_name, first_name, e.manager_id, 
+department_id, department_name 
+from employees e join departments d
+using (department_id)
+where e.manager_id = 149;
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+from tab1 join tab2 on cond1
+join tab3 on cond2......
+
+
+
+wrong way
+from tab1 join tab2 join tab3.....
+
+
+
+select e.salary, r.region_name
+from employees e join departments d on e.department_id = d.department_id
+join locations l on d.location_id = l.location_id
+join countries c on l.country_id = c.country_id
+join regions r on c.region_id = r.region_id
+where e.last_name = 'Ernst'
+
+
+
+
+
+
+
+
+Not ANSI compliant joins also called a theta joins
+join condition is directly specified in the where clause
+
+select department_name, last_name HOD
+from employees e,departments d
+where d.manager_id = e.employee_id
+
+
+
+
+
+1. Get me the names of employees who earn more than Ernst
+2. Get the names of employees who work for Administration derpartment
+
+inner join
+select last_name, first_name
+from employees join departments using(department_id)
+where department_name like '%Administration%'
+
+
+select last_name, first_name, department_name
+from employees join departments using(department_id)
+where department_name like '%Administration%'
+
+
+step1: 
+get the department_id of administration department
+
+select department_id from departments where department_name like '%Administration%'
+
+step2:
+get the names of employees working in the department_id retrieved in step1
+
+select last_name, first_name from employees where department_id = 10;
+
+
+
+
+select last_name, first_name from employees where department_id = (select department_id from departments where department_name like '%Administration%')
+
+
+select last_name, first_name
+from employees
+where salary > (select salary from employees where last_name = 'Ernst')
+
+
+
+
+
+
+3. Get me the names of employees who are based out of Americas region
+
+inner join
+
+Ernst
+
+select last_name, first_name
+from employees
+where salary =
+(select max(salary)
+from employees
+where salary<
+(select max(salary) from employees))
+
+
+
+
+
+
+Barsha  5000
+Anish 	2000
+KAniz 	3000
+
+
+select last_name, first_name
+from employees
+where salary = 3000
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+cross join
+
+A : {1,2,3,4}
+B: {a,b,c}
+
+cross product
+
+A X B = {(1,a),(1,b),(1,c),(2,a),(2,b),(2,c),(3,a),(3,b),(3,c),(4,a),(4,b),(4,c)}
+
+
+select *
+from employees cross join departments
+
+
+total rows = 107*27
+
+
+
+Player_info
+P1
+P2
+P3
+
+
+team_info
+T1
+T2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

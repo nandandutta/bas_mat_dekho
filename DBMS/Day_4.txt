@@ -1,0 +1,85 @@
+if you are using not in between the outer query and the subquery
+and if your sub query reurns null as one of the values then the subquery should eliminate the null from the sub query
+
+Assume your subquery returns 10,20,30, null
+The condition department_id not in (10,20,30, null) will always returns false for any given row
+
+ ==> (department_id != 10 and department_id !=20 and department_id !=30 and department_id != null)
+
+This condition will be false for any given row
+
+
+=, !=, < , > <=, >= can compare single values. These operators can be used only if the subqery returns a single value
+
+
+like the below where we have a single row(value) subquery
+
+select last_name
+from employees
+where salary  = (select max(salary) from employees)
+
+If your sub query returns multiple rows like in the below case, operators like IN, ANY and ALL can be used
+
+select department_name from departments 
+where department_id NOT IN(select distinct department_id 
+				from employees
+				where department_id is not null)
+/
+
+
+
+SELECT employee_id, last_name, job_id, salary
+FROM   employees
+WHERE  salary >ALL
+                    (SELECT salary
+                     FROM   employees
+                     WHERE  job_id = 'IT_PROG')
+
+
+
+In this case the possible operators to fill the blank are:
+1. IN
+2. ALL
+3. ANY
+
+
+Get me the details of employees who earn more than all the salaries of IT programmers
+
+
+9000,6000,4800,4800,4200
+>ALL => >9000 and > 6000 and >4800 and >4200
+
+
+> ALL ==> > MAX
+
+
+
+Get me the details of employees who earn less than all the salaries of IT programmers
+
+< ALL ==> < MIN
+
+
+Get me the details of employees who earn more than any the salaries of IT programmers
+
+SELECT employee_id, last_name, job_id, salary
+FROM   employees
+WHERE  salary >ANY
+                    (SELECT salary
+                     FROM   employees
+                     WHERE  job_id = 'IT_PROG')
+
+
+
+
+
+9000,6000,4800,4800,4200
+>ANY(9000,6000,4800,4800,4200) => >9000 or >6000 or >4800 or >4200
+
+>ANY(9000,6000,4800,4800,4200) ==> >MIN(9000,6000,4800,4800,4200)
+<ANY(9000,6000,4800,4800,4200) ==> < MAX(9000,6000,4800,4800,4200)
+
+
+
+
+
+

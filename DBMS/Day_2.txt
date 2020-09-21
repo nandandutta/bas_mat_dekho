@@ -1,0 +1,247 @@
+when you retrieve the data what will be the default order of the data? - no order
+
+To sort the data - use order by clause
+
+order by clause sorts the data in ascending order
+numbers : lowest to highest
+Alphabets : a..z (alphabetical order)
+Dates : oldest to latest
+Nulls : ?
+
+
+To sort the data in descending order use desc clause in the order by
+
+fetch the last_name, salary and commission_pct. sort the data in the increasing order of commission_pct
+
+select last_name, salary,commission_pct
+from employees
+order by commission_pct
+
+select last_name, salary,commission_pct
+from employees
+order by commission_pct asc
+
+Position of the column as it appears in the select statement can be specified in the order by clause for sorting:
+
+select last_name, salary,commission_pct
+from employees
+order by 3
+
+if a column contains null : 
+ASC : null records will be placed at the last
+DESC : null records will be placed on top
+
+within these null records the data will be unordered
+
+% -> any chatecter can occour any no of times (0 or more occourrence of any charecter)
+_ -> one occurrence of any charetcer
+
+1.
+Fetch the last_name, salary and commission amount of employees who are 	
+	1.eligible for commission
+	2. get commission amount > 1500
+sort the data in the increasing order of commission amount
+
+select last_name, salary, salary*commission_pct as "comm amt"
+from employees
+where commission_pct is not null AND
+(salary*comission_pct) > 1500
+order by 3;
+
+2. 
+ There is an opening for a role in the organization with a salary budget between 5000 and 10000. The HR of the organization would want to find out the job title of the designation which falls within this range
+
+select job_title from jobs
+where min_salary >=5000 and max_salary<=10000
+
+
+
+
+Which of the below queries are correct, if incorrect, correct the errors
+a.	
+
+error
+
+Select last_name, first_name, salary, salary*12 as "Annual Salary"
+From employees
+Where "Annual Salary" > 25000
+Order by 2 desc, "Annual Salary" asc
+
+No error
+Select last_name, first_name, salary, salary*12 as "Annual Salary"
+From employees
+Where (salary*12) > 25000
+Order by 2 desc, "Annual Salary" asc
+
+First_name  Annual salary
+Usman	    5000
+zaman	    4000
+Zaman	    6000
+Amar	    9000
+Amar	    15000
+
+
+
+
+b.
+
+No error
+Select last_name
+From employees
+Order by salary
+
+
+column aliases can be used in the order by clause
+column on which you sort need not be present in the select clause
+
+
+
+
+I want to retrieve last_name and salary for any value of salary which is input by the user
+
+select last_name, salary
+from employees
+where salary > ???
+
+This is achieved by using substitution variables. These are dummy variables whose scope is only within the query, these variables are prefixed with an &
+
+select last_name, salary
+from employees
+where salary > &sal
+
+here &sal is a substitution variable, the value for which will be taken at run time from the user
+
+Another example: for substituting charetcer data, place the substitution variables within single quotes
+
+select last_name, salary
+from employees
+where last_name = '&lname'
+
+
+
+
+
+
+
+Suppose i want to execute some queries for the same value of salary, and i am lazy to enter the value of salary every time
+
+select last_name, first_name
+from employees
+where salary > &sal
+
+
+select last_name, first_name
+from employees
+where salary < &sal
+
+
+select last_name, department_id
+from employees
+where salary > &sal
+
+
+select last_name, department_id, commission_pct
+from employees
+where salary > &sal
+
+
+All of these queries are to be executed for some value of salary input by the user
+
+use define clause to set the substitution variable globally. scope of these variable would be in the entire session
+
+define sal=5000;
+
+to clear the value of the substitution variable use undefine
+undefine sal;
+
+
+
+Find the Number of weeks an employee has worked in a job role. 
+
+select (end_date-start_date)/7 as week
+from job_history
+
+
+valid operations on dates:
+date1-date2 : number of days between 2 dates
+date1+10 : date after 10 days
+date1-10 : date before 10 days
+
+
+
+Q. Find out how many days have been lapsed since hiring of all employees in dept 90.
+
+select sysdate-hire_date as "days lapsed"
+from employees
+where department_id = 90;
+
+
+
+select '10'+'10' from dual; --20
+
+select 10||'hi' from dual; --10hi
+
+select 10 +'hi' from dual; --error
+
+
+
+
+
+Groping data and Aggregates
+Aggregate functions in SQL:
+
+count(col) -> count of all non-null records in the column
+count(*) -> counts the rows in the table
+min
+max
+avg
+
+
+Group 
+
+
+
+how many employees do i have in every department
+
+
+
+
+select department_id, count(*), sum(salary), max(salary), avg(salary)
+from employees
+group by department_id
+
+
+while grouping the data you can select:
+1. the column on which you are grouping
+2. any aggregate you want to appply for every grouped column
+
+
+below query does not make any sense and it will result in an error
+select department_id, last_name,count(*)
+from employees
+group by department_id
+
+
+After grouping the data you can only restrict the groups and sort them and not the original rows. hence below query will result in an error
+
+SELECT   department_id, AVG(salary)
+FROM     employees
+GROUP BY department_id
+order by salary
+
+
+what happens?
+SELECT   department_id, AVG(salary)
+FROM     employees
+GROUP BY department_id
+order by count(*)
+
+
+
+
+
+
+
+
+
+

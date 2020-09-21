@@ -1,0 +1,217 @@
+Window functions:
+Tries to overcome the drawbacks of group by
+
+1.
+suppose i want empname, salary, deptno and dept's avg salary. how do i do this?
+does group by solve this? No - group by abstracts the data and results in groups
+
+Solution : use window functions - implement "over pratition by" clause
+
+To achieve this the data is logically partitioned and the aggregate is computed
+
+select Avg(salary) OVER (PARTITION BY department_id)
+from employees
+ 
+- computes the avg(salary) by paritioning the data on department_id column
+
+1. take the first employee record
+2. fetch the department in which the employee is working
+3. compute the average salary for all employees in the dept which the employee is working
+4. repeat the above steps for all the selected employee records
+
+This helps to find an employee's salary along with his departments avg salary
+
+
+
+
+select last_name, salary, department_id, 
+Avg(salary) OVER (PARTITION BY department_id) as "dept avg"
+from employees
+
+
+2. Get me the names of employees, dept_id and the no of employees working in their department
+
+
+select last_name, salary, department_id, 
+count(*) OVER (PARTITION BY department_id) as "emp count"
+from employees
+
+
+in partition by clause some anlalytical functions can be used like:
+1. rank
+2. dense_rank
+3. row_number
+
+
+
+Rank the employees in their department based on the increasing order of salary.
+
+i.e an employee getting the lowest salary in the department will be mapped to a lower rank
+
+
+SELECT last_name, salary, department_id,
+rank() over (partition by department_id order by salary) emp_rank
+FROM Employees
+order by 3,4
+
+SELECT last_name, salary, department_id,
+dense_rank() over (partition by department_id order by salary) emp_rank
+FROM Employees
+order by 3,4
+
+what happens?
+SELECT last_name, salary, department_id,
+rank() over (order by salary) emp_rank
+FROM Employees
+order by 2,4
+
+what happens?
+SELECT last_name, salary, department_id,
+rank() over (partition by department_id) emp_rank
+FROM Employees
+
+
+row_number() - genrate sequence numbers based on an ordering defined within a partition
+
+
+SELECT last_name, salary, department_id,
+row_number() over (partition by department_id order by salary) emp_rank
+FROM Employees
+order by 3,4
+
+row_number - used in top n analysis
+dense_rank - used to get the nth highest or lowest value
+
+
+
+Views - Virtual tables which do not store data. They contain the structure on the underlying data
+
+
+
+Suppose i want to do a region wise analysis
+i want find highest salary in every region
+
+
+select region_name, max(salary)
+from employees join departments using(department_id)
+join locations using(location_id)
+join countries using (country_id)
+join regions using (region_id)
+group by region_name
+
+The above can be alretnatively solved creating a view:
+
+create view emp_regions
+as 
+(select region_name, salary
+from employees join departments using(department_id)
+join locations using(location_id)
+join countries using (country_id)
+join regions using (region_id));
+
+get the avg salary for every region from the view
+select region_name, avg(salary)
+from  emp_regions
+group by region_name;
+
+get the min salary for every region from the view
+select region_name, min(salary)
+from  emp_regions
+group by region_name;
+
+drop view emp_regions;
+
+
+inline view -  subqeury in the from clause
+
+
+select region_name, avg(salary)
+from
+(select region_name, salary
+from employees join departments using(department_id)
+join locations using(location_id)
+join countries using (country_id)
+join regions using (region_id))
+group by region_name;
+
+
+Get the employees getting salary more than their department's average
+
+select last_name
+from
+(select last_name, salary,
+Avg(salary) OVER (PARTITION BY department_id) as dept_avg
+from employees)
+where salary > dept_avg
+
+
+
+
+
+Q. Find the 5th highest salary in each department
+
+select last_name, department_id,salary
+from
+(select last_name, salary, department_id,
+dense_rank() over (partition by department_id order by salary desc) as emp_rank 
+from employees)
+where emp_rank = 5
+/
+
+
+
+Comparision of rank, dense rank and row number
+
+select last_name, salary, department_id,
+    rank() over (partition by department_id order by salary desc) as "emp rank",
+    dense_rank() over (partition by department_id order by salary desc) as "emp dense rank",
+    row_number() over (partition by department_id order by salary desc) as "emp rownum"
+    from employees
+    where department_id in (50,80)
+   order by 3, 2 desc
+/
+
+
+
+select last_name, salary, salary*commission_pct as "commission amount"
+from employees
+
+
+salary+(salary*commission_pct)*12
+
+
+
+
+salary = 3200 Annual salary = 3200*12
+
+(3200+(3200*0))*12 = 3200*12
+
+
+Salary = 6200 comm = 0.1 Annual Salary = 81840
+
+((6200+(6200*0.1))*12) = 81840
+
+if my commission is null : substitue null by 0 in the computation
+else retain the commission in the computation
+
+NVL(arg1, arg2)
+
+if arg1 is null then it retunrs the second argument(arg2)
+if arg1 is not null then it retuns the first argument(arg1)
+
+
+NVL(commission_pct,0) returns comission_pct if its not null else returns 0
+
+
+
+select last_name, salary, commission_pct,
+(salary+(salary*NVL(commission_pct,0)))*12 as "Annual Salary"
+from employees
+/
+
+
+
+
+
+
+
