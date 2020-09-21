@@ -1,0 +1,5 @@
+1. for second review of the lenovo k8 get the top 5 similar reviews
+
+		
+2. for the review with the least polarity score get the top 5 similar reveiws
+	

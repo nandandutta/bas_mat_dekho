@@ -1,0 +1,12 @@
+Text = "You won lottery worth crores"
+P(Spam|Text) = P(Text|Spam) * P(Spam)  -Eq 1
+P(Text|Spam) = P(you|Spam) * P(won|Spam) * P(lottery|Spam) * P(worth|Spam) * P(Crores|Spam) - Eq 1.1
+Substituting Eq 1.1 in 1 we get,
+P(Spam|Text) = P(you|Spam) * P(won|Spam) * P(lottery|Spam) * P(worth|Spam) * P(Crores|Spam) * P(Spam)
+------------------------------------------------------
+P(Not Spam|Text) = P(text|Not Spam) * P(Not Spam) -Eq 2
+P(Text|Not Spam) = P(you|Not Spam) * P(won|Not Spam) * P(lottery|Not Spam) * P(worth|Not Spam) * P(Crores|Not Spam)  - Eq2.1
+Substituting Eq 2.1 in 2 we get,
+P(Not Spam|Text) = P(you|Not Spam) * P(won|Not Spam) * P(lottery|Not Spam) * P(worth|Not Spam) * P(Crores|Not Spam) * P(Not Spam)
+
+If Eq1 > Eq2 -> incoming message is spam else Not spam
