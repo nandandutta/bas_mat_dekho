@@ -1,0 +1,45 @@
+What is
+ 	- Spark?
+ 	- Driver Program?
+ 	- Spark Context?
+ 	- Cluster Manager?
+ 	- role of YARN in Spark?
+ 	- Spark standalone mode?
+ 	- Executor?
+ 	- Distributed Cache?
+ 	- Worker Node?
+ 	- REPL?
+ 	- Spark Application?
+ 	- Spark Job?
+ 	- (are) Stages?
+ 	- a task?
+ 	- a partition?
+ 	- Shuffle?
+ 	- RDD?
+ 	- Narrow Dependency?
+ 	- Wide Dependency?
+ 	- a transformation?
+ 	- an action?
+ 	- Lazy Evaluation?
+ 	- pair RDD?
+ 	- difference between flatMap() and map()?
+ 	- filter?
+ 	- spark-submit?
+ 	- PySpark?
+ 	- Scala?
+ 	- Functional Programming?
+ 	- Statically typed programming language?
+ 	- Dynamically typed programming language?
+ 	- Implicit cache?
+ 	- Explicit cache?
+ 	- RDD persistence?
+ 	- RDD abstraction?
+	- lineage?
+ 	- Spark SQL?
+	- DataFrame?
+	- Spark Core?
+
+How do you say Spark performs better than MapReduce?
+Why was Spark created?
+
+

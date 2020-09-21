@@ -1,0 +1,151 @@
+1.)Joins in hive executes in map side or reduce side? can you change this default behaviour?
+
+Ans- Executes in map side.
+parameter-set hive.auto.convert.join=True
+
+...........................................................................................................................
+
+2.)What is CTAS?  what does it achieve?
+Ans:- CTAS stands for "Create Table As Select".It achieve by creating  a table using sub-queries
+
+..............................................................................................................
+
+3.) What are multi-table inserts?
+Ans:-DAta can be loaded to multiple hive tables  from a single hive  table by using a single INSERT command along with a subquery
+  
+eg:-  below query populates from hive table  nysedaily table into two hive tables nyse_GAJ and nyse_GIB 
+       
+       FROM nysedaily
+       INSERT overwrite TABLE nyse_GAJ
+       SELECT * WHERE stock_symbol = 'GAJ'
+       INSERT overwrite table nyse_GIB
+       SELECT * WHERE stock_symbol = 'GIB'
+
+
+..............................................................................................................
+
+4.)  How do you extract the data from a hive query?
+
+5.) Which of the types of partitions are disallowed by default.how do you enable them
+Ans:-  Dynamic partition are  the partitions which  are disallowed by default.
+       
+       Enable them using  set hive.exec.dynamic.partition.mode =NonStrict
+............................................................................................................
+
+
+6.) Explain the functions used in the Word Count program in hive?
+Ans:- split and explode
+...........................................................................................................
+
+7.) What are the difference variants of loading data to hive tables?
+Ans:-    
+           *load data local inpath" into table nysedaily
+           *load data local inpath" overwrite into table nysedaily
+           *load data inpath" into table nysedaily
+           *load data inpath" overwrite into table nysedaily
+
+.........................................................................................................
+
+
+
+8.) what is the  difference between load and insert command in hive?
+Ans- LOAD is always associated with the path of the file to the table
+     Insert loading the data from the table through the subquerry.
+
+...............................................................................................
+ 
+9.) How do you clone tables in hive? how  do you load data to the cloned table?
+Ans:- using like operator
+
+..............................................................................................
+10.) What are the parameters required for creating a table in hive?
+Ans:- Create table.
+      row formate delimated
+      feilds terminated by ","
+      line terminated by "/n"
+..............................................................................................
+
+11.) What are the different shells in hive?
+Ans:-  Hive CLI
+       Beeline
+       Hue
+       JDBC-Java data base connectivity
+       ODBC- Open data base  connectivity
+
+...............................................................................................
+
+
+12.) What are the difference modes of execution of hive
+Ans:-Inline
+     Batch
+     Interactive
+
+...............................................................................................
+
+13.)What are the varients of insert?
+ANS-    *multi table insert
+        *single table insert
+        *insert directory ...... The store the output of the hive query in a directory on HDFS
+
+..............................................................................................
+ NOTES- Sqoop - It is bi directional (sql + hadoop)
+
+
+
+
+Ans:-  Natural join
+       Cross join etc
+
+.............................................................................................
+
+15.) How are non-equi joins implemented in hive?
+Ans:- we can do non-equi joins by inner join.
+
+..............................................................................................
+16.) What is the default data format in hive?
+Ans:-
+
+
+...............................................................................................
+17.)What are the Shortcommings of using an order by caluse  in hive?
+Ans:-
+
+
+
+
+
+        HADOOP
+
+
+1. 2 problems with big data
+2. Different solutions to BIG DATA
+3. HOW HAdoop address the 2 problem
+4.  components of HDFS
+5.  COmponents  of YARN
+6. Stages of MAP REDUCE?
+7. What does YARN try to achieve
+8. WHAT are the hadoop execution mode?
+9. What happens when you execute a command:
+    * hadoop fs...............
+    * Yarn jar................ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
