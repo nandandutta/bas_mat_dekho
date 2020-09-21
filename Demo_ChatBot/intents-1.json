@@ -1,0 +1,58 @@
+{"intents": [
+        {"tag": "greeting",
+         "patterns": ["Hi there", "How are you", "Is anyone there?","Hey","Hola", "Hello", "Good day", "Namastey" , "Namaskar", "I want to chat", "I need help"],
+         "responses": ["Hello, thanks for asking", "Good to see you again", "Hi there, how can I help?","I am here, how can I help?","Hello there! How can I help you?","What do you like to know?","How may I assist you today?","Namastey! Ask me something"],
+         "context": [""]
+        },
+        {"tag": "goodbye",
+         "patterns": ["Bye", "See you later", "Goodbye", "Nice chatting to you, bye", "Till next time"],
+         "responses": ["See you!", "Have a nice day", "Bye! Come back again soon."],
+         "context": [""]
+        },
+        {"tag": "thanks",
+         "patterns": ["Thanks", "Thank you", "That's helpful", "Awesome, thanks", "Thanks for helping me"],
+         "responses": ["Happy to help!", "Any time!", "My pleasure","Great! Can I help with anything else?", "Yaaay! I am getting good at this. what's next?","Cool! Anything else?"],
+         "context": [""]
+        },
+        {"tag": "noanswer",
+         "patterns": [],
+         "responses": ["Sorry, can't understand you", "Please give me more info", "Not sure I understand","cmon! ask me something, I might help."],
+         "context": [""]
+        },
+        {"tag": "options",
+         "patterns": ["How you could help me?", "What you can do?", "What help you provide?", "How you can be helpful?", "What support is offered","What can I do here?","What are your features?","Show me options","Show menu"],
+         "responses": ["I can help you find your next college according to your preferences, latest career opportunities and guide you to complete your career objectives", "I am designed to provide accurate information to help you in selecting your next college to study, achieve career goals and assist you while you learn in your choice of colleges.","I can help you refine your college search and pick the best college available accroding to your preferences and help you achieve your career goals."],
+         "context": [""]
+        },
+        {"tag": "find_college",
+         "patterns": ["Show colleges", "Find me a college","List of top colleges", "Search for a college", "Display colleges", "Find a college", "Search for best colleges", "I want to find a college","I want to apply in a college" ],
+         "responses": ["Do you want to add your preferences?","What kind of college you are looking for?","Hmmmmmn! Can you tell me a little more?","Can you be a little more specific?"],
+         "context": ["category_filter_college"]
+        },
+        {"tag": "category_filter_college",
+         "patterns": ["Business Management College", "Engineering Colleges", "Medical Colleges", "Law Colleges", "Add more from db list" ],
+         "responses": ["Loading top Colleges in selected category"],
+         "context": ["subcategory_filter"]
+        },
+        {"tag": "subcategory_filter_college",
+         "patterns": ["Course category name" ],
+         "responses": ["Loading top colleges"],
+         "context": ["apply_now"]
+        },
+        {"tag": "apply_now",
+         "patterns": [],
+         "responses": ["Tell me your name"],
+         "context": [""]
+        },
+        {"tag": "location_filter_college",
+         "patterns": ["Find nearby colleges", "Find college in city"],
+         "responses": ["Please provide location"],
+         "context": ["search_pharmacy_by_name"]
+        },
+        {"tag": "search_college_by_name",
+         "patterns": [],
+         "responses": ["Loading college details"],
+         "context": [""]
+        }
+   ]
+}
